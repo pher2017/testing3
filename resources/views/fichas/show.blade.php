@@ -7,7 +7,7 @@
                 <h2>Ver Ficha</h2>
             </div>
             <div class="d-flex flex-row-reverse">
-                <a class="btn btn-primary" href="{{ route('fichas.index') }}"> Volver</a>
+                <a class="btn btn-primary" href="{{ route('fichas.index') }}"> Cerrar</a>
             </div>
         </div>
     </div>

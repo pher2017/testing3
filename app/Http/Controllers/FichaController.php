@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\Ficha;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use RealRashid\SweetAlert\Facades\Alert;
 
 
 
@@ -19,7 +20,7 @@ class FichaController extends Controller
         $search= $request->get('search');
         $fichas = DB::table('fichas')
         ->select('fichas.*')
-        ->where('fichas.apellidos','like','%'.$search.'%')
+        ->where('fichas.apellidos','LIKE','%'.$search.'%')
         ->paginate(10);
         return view('fichas.index', compact('fichas','search'));
     }
@@ -42,11 +43,48 @@ class FichaController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-         Ficha::create($request->all());
 
-        return redirect()->route('fichas.index')
-                        ->with('success','Ficha Ingresada Correctamente.');
+    {
+        $rut= $request->rut;
+
+       $valida=DB::table('fichas')
+            ->select('rut')
+            ->where('rut','=',$rut)
+            ->get();
+
+        if($valida->isEmpty()){
+            $ficha = new Ficha();
+            $ficha->rut = $request->rut;
+            $ficha->nombres = $request->nombres;
+            $ficha->apellidos = $request->apellidos;
+            $ficha->direccion = $request->direccion;
+            $ficha->ciudad = $request->ciudad;
+            $ficha->telefono = $request->telefono;
+            $ficha->email = $request->email;
+            $ficha->fecha_nacimiento = $request->fecha_nacimiento;
+            $ficha->estado_civil = $request->estado_civil;
+            $ficha->comentarios = $request->comentarios;
+            $ficha->save();
+            Alert::success('Ficha creada con exito');
+            return redirect()->route('fichas.index');
+        }else{
+            $id=DB::table('fichas')
+            ->select('id')
+            ->where('rut','=',$rut)
+            ->get();
+
+            Alert::error('Error', 'El rut ya existe Sera redireccionado a la ficha existente');
+
+            return redirect()->route('fichas.edit', $id[0]->id);
+        }
+
+
+
+
+        //  Ficha::create($request->all());
+
+        // return redirect()->route('fichas.index')
+        //                 ->with('success','Ficha Ingresada Correctamente.');
     }
 
     /**

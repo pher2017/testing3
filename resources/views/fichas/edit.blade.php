@@ -6,7 +6,7 @@
         <div class="card-header">
             <h2>Editar Ficha</h2>
             <div class="d-flex flex-row-reverse">
-                <a class="btn btn-primary" href="{{ route('fichas.index') }}"> Volver</a>
+                <a class="btn btn-primary" href="{{ route('fichas.index') }}"> Cerrar</a>
             </div>
         </div>
 
@@ -75,7 +75,7 @@
                 <p></p>
                 <div class="card-body">
                     <div class="col-xs-12 col-sm-12 col-md-12 d-flex flex-row-reverse">
-                        <button type="submit" class="btn btn-primary">Enviar</button>
+                        <button type="submit" class="btn btn-primary">Guardar</button>
                     </div>
                 </div>
 
